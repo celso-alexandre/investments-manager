@@ -6,6 +6,7 @@ import {
   DeleteOneUserArgs,
   FindManyUserArgs,
   FindUniqueUserArgs,
+  UpdateOneUserArgs,
 } from './dto';
 import { User } from './dto';
 import { UserService } from './user.service';
@@ -32,6 +33,11 @@ export class UserResolver {
   @Mutation(() => Boolean, { name: 'createUsers' })
   createMany(@Args() args: CreateManyUserArgs): Promise<boolean> {
     return this.service.createMany(args);
+  }
+
+  @Mutation(() => User, { name: 'updateUser' })
+  updateOne(@Args() args: UpdateOneUserArgs): Promise<User> {
+    return this.service.updateOne(args);
   }
 
   @Mutation(() => User, { name: 'deleteUser' })

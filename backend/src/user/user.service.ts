@@ -7,6 +7,7 @@ import {
   DeleteOneUserArgs,
   FindManyUserArgs,
   FindUniqueUserArgs,
+  UpdateOneUserArgs,
 } from './dto';
 
 @Injectable()
@@ -28,6 +29,10 @@ export class UserService {
   async createMany(args: CreateManyUserArgs) {
     await this.prisma.user.createMany(args);
     return true;
+  }
+
+  updateOne(args: UpdateOneUserArgs) {
+    return this.prisma.user.update(args);
   }
 
   deleteOne(args: DeleteOneUserArgs) {
