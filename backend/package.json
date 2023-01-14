@@ -1,10 +1,13 @@
 {
   "name": "backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Manage your investments (stocks, real state, fixed rate...) in a more detailed manner. Forget about your stylesheets",
+  "author": "@celso-alexandre",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0 <19.0.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,9 +23,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/apollo": "^10.1.7",
+    "@nestjs/class-validator": "^0.13.4",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/graphql": "^10.1.7",
+    "apollo-server-fastify": "^3.11.1",
+    "fastify": "^4.11.0",
+    "graphql": "^16.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -47,7 +55,9 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "webpack": "^5.75.0",
+    "yarn-upgrade-all": "^0.7.2"
   },
   "jest": {
     "moduleFileExtensions": [
