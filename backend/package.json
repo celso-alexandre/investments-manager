@@ -29,7 +29,7 @@
     "prisma:seed": "ts-node prisma/seed.ts",
     "prisma:generate": "PRISMA_BINARY_TARGET=\\\"native\\\" prisma generate",
     "prisma:proto": "PRISMA_BINARY_TARGET=\\\"native\\\" prisma db push",
-    "prisma:migrate": "PRISMA_BINARY_TARGET=\\\"native\\\" prisma migrate dev && pnpm prisma-uml prisma/schema.prisma --output jpg --file schema.jpg",
+    "prisma:migrate": "PRISMA_BINARY_TARGET=\\\"native\\\" prisma migrate dev",
     "prisma:migrate:create": "pnpm prisma migrate dev --create-only"
   },
   "dependencies": {
