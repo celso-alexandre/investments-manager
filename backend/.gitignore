@@ -1,3 +1,4 @@
+src/prisma/@generated/
 .env
 yarn-lock.json
 package-lock.json

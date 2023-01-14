@@ -15,35 +15,41 @@ generator nestgraphql {
   graphqlScalars_BigInt_specifier = "graphql-scalars"
 }
 
-enum GoalType {
-   value
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_WITH_SCHEMA")
 }
+
+enum GoalType {
+  value
+}
+
 enum GoalLevel {
-   pessimist
-   realist
-   otimist
+  pessimist
+  realist
+  otimist
 }
 
 model User {
   /// ID
-  id                    Int          @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   /// Email
   email String
   /// Name
-  name String
+  name  String
 }
 
 model InvestmentGoal {
   /// ID
-  id                    Int          @id @default(autoincrement())
+  id                 Int       @id @default(autoincrement())
   /// Type
-  type GoalType
+  type               GoalType
   /// Level
-  level GoalLevel
+  level              GoalLevel
   /// Montly value to apport (in cents)
   monthlyApportValue Int
   /// Value to be reached (in cents)
-  value Int
+  value              Int
   /// Yearly rentability tax (percentage * 100, allowing 2 decimal places)
-  rentabilityTax Int
+  rentabilityTax     Int
 }
