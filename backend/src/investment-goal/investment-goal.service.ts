@@ -7,6 +7,7 @@ import {
   DeleteOneInvestmentGoalArgs,
   FindManyInvestmentGoalArgs,
   FindUniqueInvestmentGoalArgs,
+  UpdateManyInvestmentGoalArgs,
   UpdateOneInvestmentGoalArgs,
 } from './dto';
 
@@ -33,6 +34,12 @@ export class InvestmentGoalService {
 
   updateOne(args: UpdateOneInvestmentGoalArgs) {
     return this.prisma.investmentGoal.update(args);
+  }
+
+  updateMany(args: UpdateManyInvestmentGoalArgs) {
+    return Promise.all(
+      args.updateMany.map((arg) => this.prisma.investmentGoal.update(arg)),
+    );
   }
 
   deleteOne(args: DeleteOneInvestmentGoalArgs) {

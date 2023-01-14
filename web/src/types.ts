@@ -204,7 +204,9 @@ export type Mutation = {
   deleteUser: User;
   deleteUsers: Scalars['Boolean'];
   updateInvestmentGoal: InvestmentGoal;
+  updateInvestmentGoals: Array<InvestmentGoal>;
   updateUser: User;
+  updateUsers: Array<User>;
 };
 
 
@@ -256,9 +258,19 @@ export type MutationUpdateInvestmentGoalArgs = {
 };
 
 
+export type MutationUpdateInvestmentGoalsArgs = {
+  updateMany: Array<UpdateOneInvestmentGoalInput>;
+};
+
+
 export type MutationUpdateUserArgs = {
   data: UserUpdateInput;
   where: UserWhereUniqueInput;
+};
+
+
+export type MutationUpdateUsersArgs = {
+  updateMany: Array<UpdateOneUserInput>;
 };
 
 export type NestedEnumGoalLevelFilter = {
@@ -365,6 +377,16 @@ export type StringFilter = {
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateOneInvestmentGoalInput = {
+  data: InvestmentGoalUpdateInput;
+  where: InvestmentGoalWhereUniqueInput;
+};
+
+export type UpdateOneUserInput = {
+  data: UserUpdateInput;
+  where: UserWhereUniqueInput;
 };
 
 export type User = {
@@ -556,6 +578,8 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   StringFieldUpdateOperationsInput: StringFieldUpdateOperationsInput;
   StringFilter: StringFilter;
+  UpdateOneInvestmentGoalInput: UpdateOneInvestmentGoalInput;
+  UpdateOneUserInput: UpdateOneUserInput;
   User: ResolverTypeWrapper<User>;
   UserAvgAggregate: ResolverTypeWrapper<UserAvgAggregate>;
   UserCountAggregate: ResolverTypeWrapper<UserCountAggregate>;
@@ -605,6 +629,8 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   StringFieldUpdateOperationsInput: StringFieldUpdateOperationsInput;
   StringFilter: StringFilter;
+  UpdateOneInvestmentGoalInput: UpdateOneInvestmentGoalInput;
+  UpdateOneUserInput: UpdateOneUserInput;
   User: User;
   UserAvgAggregate: UserAvgAggregate;
   UserCountAggregate: UserCountAggregate;
@@ -686,7 +712,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'where'>>;
   deleteUsers?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteUsersArgs>>;
   updateInvestmentGoal?: Resolver<ResolversTypes['InvestmentGoal'], ParentType, ContextType, RequireFields<MutationUpdateInvestmentGoalArgs, 'data' | 'where'>>;
+  updateInvestmentGoals?: Resolver<Array<ResolversTypes['InvestmentGoal']>, ParentType, ContextType, RequireFields<MutationUpdateInvestmentGoalsArgs, 'updateMany'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data' | 'where'>>;
+  updateUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpdateUsersArgs, 'updateMany'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

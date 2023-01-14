@@ -6,6 +6,7 @@ import {
   DeleteOneInvestmentGoalArgs,
   FindManyInvestmentGoalArgs,
   FindUniqueInvestmentGoalArgs,
+  UpdateManyInvestmentGoalArgs,
   UpdateOneInvestmentGoalArgs,
 } from './dto';
 import { InvestmentGoal } from './dto';
@@ -46,6 +47,13 @@ export class InvestmentGoalResolver {
     @Args() args: UpdateOneInvestmentGoalArgs,
   ): Promise<InvestmentGoal> {
     return this.service.updateOne(args);
+  }
+
+  @Mutation(() => [InvestmentGoal], { name: 'updateInvestmentGoals' })
+  updateMany(
+    @Args() args: UpdateManyInvestmentGoalArgs,
+  ): Promise<InvestmentGoal[]> {
+    return this.service.updateMany(args);
   }
 
   @Mutation(() => InvestmentGoal, { name: 'deleteInvestmentGoal' })
