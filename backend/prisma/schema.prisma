@@ -1,0 +1,57 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = [env("PRISMA_BINARY_TARGET")]
+  previewFeatures = ["filteredRelationCount"]
+}
+
+generator nestgraphql {
+  provider                        = "node node_modules/prisma-nestjs-graphql"
+  output                          = "../src/prisma/@generated"
+  reExport                        = "All"
+  fields_Scalars_from             = "graphql-scalars"
+  fields_Scalars_input            = true
+  fields_Scalars_output           = true
+  graphqlScalars_BigInt_name      = "GraphQLBigInt"
+  graphqlScalars_BigInt_specifier = "graphql-scalars"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_WITH_SCHEMA")
+}
+
+enum GoalType {
+  value
+}
+
+enum GoalLevel {
+  pessimist
+  realist
+  optimist
+}
+
+model User {
+  /// ID
+  id    Int    @id @default(autoincrement())
+  /// @Validator.IsEmail()
+  email String @unique
+  /// Name
+  name  String
+}
+
+model InvestmentGoal {
+  /// ID
+  id                 Int       @id @default(autoincrement())
+  /// Type
+  type               GoalType
+  /// Level
+  level              GoalLevel
+  /// Montly value to apport (in cents)
+  monthlyApportValue Int
+  /// Value to be reached (in cents)
+  value              Int
+  /// Yearly rentability tax (percentage * 100, allowing 2 decimal places)
+  rentabilityTax     Int
+
+  @@unique([type, level])
+}
