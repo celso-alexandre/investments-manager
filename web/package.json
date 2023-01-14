@@ -1,8 +1,14 @@
 {
   "name": "web",
+  "version": "0.0.1",
+  "description": "Manage your investments (stocks, real state, fixed rate...) in a more detailed manner. Forget about your stylesheets",
+  "author": "@celso-alexandre",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "npm": "please-use-pnpm",
+    "yarn": "please-use-pnpm"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
