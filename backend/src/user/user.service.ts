@@ -7,6 +7,7 @@ import {
   DeleteOneUserArgs,
   FindManyUserArgs,
   FindUniqueUserArgs,
+  UpdateManyUserArgs,
   UpdateOneUserArgs,
 } from './dto';
 
@@ -33,6 +34,12 @@ export class UserService {
 
   updateOne(args: UpdateOneUserArgs) {
     return this.prisma.user.update(args);
+  }
+
+  updateMany(args: UpdateManyUserArgs) {
+    return Promise.all(
+      args.updateMany.map((arg) => this.prisma.user.update(arg)),
+    );
   }
 
   deleteOne(args: DeleteOneUserArgs) {
