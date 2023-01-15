@@ -1,13 +1,10 @@
-export function formatNumber(value?: number | string | null) {
-  return Intl.NumberFormat(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(
-    Number.parseInt(value as any, 10) || 0
-  );
+const decimalToIntMultiplier = 100;
+export function serializeDecimalAsInt<T extends number | undefined>(value: T) {
+  if (!value) return value;
+  return value * decimalToIntMultiplier;
 }
 
-export function formatCurrency(value?: number | string) {
-  return `$ ${formatNumber(value)}`;
-}
-
-export function formatPercent(value?: number | string) {
-  return `${formatNumber(value)} %`;
+export function serializeIntAsDecimal<T extends number | undefined>(value: T) {
+  if (!value) return value;
+  return value / decimalToIntMultiplier;
 }

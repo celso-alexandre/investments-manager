@@ -43,5 +43,14 @@ module.exports = {
     'no-floating-promises': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-console': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
 };
