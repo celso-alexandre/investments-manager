@@ -1,5 +1,5 @@
 schema:
-  - ${API_URI}
+  - ${VITE_API_URI}
 documents: 'src/**/*.gql.ts'
 generates:
   ./src/types.ts:

@@ -1,9 +1,8 @@
-import { Button, Col, Form, FormInstance, Input, Select } from 'antd';
+import { Col, Form, FormInstance, Input, Select } from 'antd';
 import { Fragment, useEffect, useMemo } from 'react';
 import type {
   InvestmentGoalsQuery,
-  useUpdateInvestmentGoalsMutation,
-  useCreateInvestmentGoalsMutation,
+  useCreateUpdateInvestmentGoalsMutation,
 } from './graphql/__generated__/index.gql.generated';
 import { defaultValuesDto, FormValues, InitialValues, onSubmit } from './helpers';
 import { InputNumberMoney } from '../components/input-number-money';
@@ -13,13 +12,11 @@ import { GoalLevel, GoalType } from '../types';
 export function InvestmentGoalsEditForm({
   data,
   form,
-  createMany,
-  updateMany,
+  createUpdateMany: createUpdateDelete,
 }: {
   data: InvestmentGoalsQuery | undefined;
   form: FormInstance<any>;
-  createMany: ReturnType<typeof useCreateInvestmentGoalsMutation>[0];
-  updateMany: ReturnType<typeof useUpdateInvestmentGoalsMutation>[0];
+  createUpdateMany: ReturnType<typeof useCreateUpdateInvestmentGoalsMutation>[0];
 }) {
   const defaultValues = useMemo<InitialValues>(() => {
     const defVal: Pick<FormValues, 'type' | 'monthlyApportValue' | 'value'> = {
@@ -47,11 +44,12 @@ export function InvestmentGoalsEditForm({
       form={form}
       onFinish={async values => {
         const datas = onSubmit(values);
-        const promises = [
-          ...(!datas.createMany.data.length ? [] : [createMany({ variables: datas.createMany })]),
-          ...(!datas.updateMany.length ? [] : [updateMany({ variables: { updateMany: datas.updateMany } })]),
-        ];
-        await Promise.all(promises);
+        await createUpdateDelete({
+          variables: {
+            createMany: datas.createMany,
+            updateMany: { updateMany: datas.updateMany },
+          },
+        });
       }}
     >
       {Object.values([GoalLevel.Pessimist, GoalLevel.Realist, GoalLevel.Optimist]).map(level => {
@@ -118,15 +116,6 @@ export function InvestmentGoalsEditForm({
           </Fragment>
         );
       })}
-      <div style={{ width: '100%', textAlign: 'center', marginTop: '20px' }}>
-        <Button
-          onClick={() => {
-            form.submit();
-          }}
-        >
-          Save & reload
-        </Button>
-      </div>
     </Form>
   );
 }
