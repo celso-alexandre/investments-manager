@@ -1,8 +1,9 @@
-import { Col, Form, InputNumber, Select, Skeleton, Typography } from 'antd';
+import { Button, Col, Form, InputNumber, Select, Skeleton, Typography } from 'antd';
 import { useMemo } from 'react';
-import type * as Types from '../types';
+import * as Types from '../types';
 import { GoalLevel, GoalType } from '../types';
 import {
+  InvestmentGoalDocument,
   useCreateInvestmentGoalsMutation,
   useInvestmentGoalsQuery,
   useUpdateInvestmentGoalsMutation,
@@ -10,34 +11,46 @@ import {
 import { formatCurrency, formatPercent } from '../helpers';
 
 type FormValues = Types.InvestmentGoalCreateInput & { id?: string };
+// eslint-disable-next-line no-unused-vars
+type InitialValues = { [key in GoalLevel]: FormValues };
 export function InvestmentGoals() {
   const [form] = Form.useForm();
   const { data, loading: loadingData } = useInvestmentGoalsQuery({ fetchPolicy: 'cache-and-network' });
-  const [update, { loading: loadingUpdate }] = useUpdateInvestmentGoalsMutation();
-  const [create, { loading: loadingCreate }] = useCreateInvestmentGoalsMutation();
+  const [updateMany, { loading: loadingUpdate }] = useUpdateInvestmentGoalsMutation({
+    refetchQueries: [InvestmentGoalDocument],
+  });
+  const [createMany, { loading: loadingCreate }] = useCreateInvestmentGoalsMutation({
+    refetchQueries: [InvestmentGoalDocument],
+  });
 
-  function onSubmit({ id, ...formData }: FormValues) {
-    if (id) {
-      return update({
-        variables: {
-          updateMany: {
-            where: { id: +id },
-            data: Object.entries(formData).reduce((prev, [key, value]) => {
-              return {
-                ...prev,
-                [key]: { set: value },
-              };
-            }, {} as Types.InvestmentGoalUpdateInput),
-          },
-        },
-      });
-    }
+  async function onSubmit(submittedValues: InitialValues) {
+    const datas = Object.values(submittedValues).reduce(
+      (prev, cur) => {
+        if (cur.id) {
+          prev.updateMany.push({
+            where: { id: +cur.id },
+            data: Object.entries(cur).reduce((prev_, [key_, value_]) => {
+              if (key_ === 'id') return prev_;
+              return { ...prev_, [key_]: { set: value_ } };
+            }, {} as (typeof prev)['updateMany'][0]['data']),
+          });
+          return prev;
+        }
 
-    return create({
-      variables: {
-        data: formData,
+        prev.createMany.data.push({ ...cur, id: undefined });
+        return prev;
       },
-    });
+      {
+        updateMany: [] as Types.MutationUpdateInvestmentGoalsArgs['updateMany'],
+        createMany: { data: [] } as Types.MutationCreateInvestmentGoalsArgs,
+      }
+    );
+
+    const promises = [
+      ...(!datas.createMany.data.length ? [] : [createMany({ variables: datas.createMany })]),
+      ...(!datas.updateMany.length ? [] : [updateMany({ variables: { updateMany: datas.updateMany } })]),
+    ];
+    await Promise.all(promises);
   }
 
   const isLoading = useMemo(
@@ -45,8 +58,6 @@ export function InvestmentGoals() {
     [loadingData, loadingCreate, loadingUpdate]
   );
 
-  // eslint-disable-next-line no-unused-vars
-  type InitialValues = { [key in GoalLevel]: FormValues };
   const defaultValues = useMemo<InitialValues>(() => {
     const defVal: Pick<FormValues, 'type' | 'monthlyApportValue' | 'value'> = {
       type: GoalType.Value,
@@ -170,6 +181,15 @@ export function InvestmentGoals() {
               </>
             );
           })}
+          <div style={{ width: '100%', textAlign: 'center', marginTop: '20px' }}>
+            <Button
+              onClick={() => {
+                form.submit();
+              }}
+            >
+              Save & reload
+            </Button>
+          </div>
         </Form>
       </div>
     </>
