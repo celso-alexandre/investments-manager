@@ -4,7 +4,7 @@ import type {
   InvestmentGoalsQuery,
   useCreateUpdateInvestmentGoalsMutation,
 } from './graphql/__generated__/index.gql.generated';
-import { defaultValuesDto, FormValues, InitialValues, onSubmit } from './helpers';
+import { defaultValuesDto, PerLevelValues, FormValues, onSubmit } from './helpers';
 import { InputNumberMoney } from '../components/input-number-money';
 import { InputNumberPercent } from '../components/input-number-percent';
 import { GoalLevel, GoalType } from '../types';
@@ -18,8 +18,8 @@ export function InvestmentGoalsEditForm({
   form: FormInstance<any>;
   createUpdateMany: ReturnType<typeof useCreateUpdateInvestmentGoalsMutation>[0];
 }) {
-  const defaultValues = useMemo<InitialValues>(() => {
-    const defVal: Pick<FormValues, 'type' | 'monthlyApportValue' | 'value'> = {
+  const defaultValues = useMemo<FormValues>(() => {
+    const defVal: Pick<PerLevelValues, 'type' | 'monthlyApportValue' | 'value'> = {
       type: GoalType.Value,
       monthlyApportValue: 0,
       value: 0,
@@ -28,9 +28,9 @@ export function InvestmentGoalsEditForm({
       const found = data?.investmentGoals?.find(goal => goal.level === level);
       if (found) return { ...prev, [level]: defaultValuesDto(found) };
       const rentabilityTax = 9 + i * 2;
-      const res: FormValues = { ...defVal, level, rentabilityTax };
+      const res: PerLevelValues = { ...defVal, level, rentabilityTax };
       return { ...prev, [level]: res };
-    }, {} as InitialValues);
+    }, {} as FormValues);
   }, [data]);
 
   useEffect(() => {
@@ -57,12 +57,12 @@ export function InvestmentGoalsEditForm({
         console.log('initialValue', initialValue);
         return (
           <Fragment key={level}>
-            <Form.Item name={[level, nameof<FormValues>(o => o.id)]} hidden>
+            <Form.Item name={[level, nameof<PerLevelValues>(o => o.id)]} hidden>
               <Input />
             </Form.Item>
 
             <Col span={4}>
-              <Form.Item name={[level, nameof<FormValues>(o => o.level)]} label="Level" labelCol={{ span: 24 }}>
+              <Form.Item name={[level, nameof<PerLevelValues>(o => o.level)]} label="Level" labelCol={{ span: 24 }}>
                 <Select
                   style={{ width: '100%' }}
                   disabled
@@ -76,7 +76,7 @@ export function InvestmentGoalsEditForm({
             </Col>
 
             <Col span={4}>
-              <Form.Item name={[level, nameof<FormValues>(o => o.type)]} label="Type" labelCol={{ span: 24 }}>
+              <Form.Item name={[level, nameof<PerLevelValues>(o => o.type)]} label="Type" labelCol={{ span: 24 }}>
                 <Select
                   style={{ width: '100%' }}
                   allowClear={false}
@@ -90,7 +90,7 @@ export function InvestmentGoalsEditForm({
 
             <Col span={6}>
               <Form.Item
-                name={[level, nameof<FormValues>(o => o.monthlyApportValue)]}
+                name={[level, nameof<PerLevelValues>(o => o.monthlyApportValue)]}
                 label="Monthly Apport"
                 labelCol={{ span: 24 }}
               >
@@ -100,7 +100,7 @@ export function InvestmentGoalsEditForm({
 
             <Col span={4}>
               <Form.Item
-                name={[level, nameof<FormValues>(o => o.rentabilityTax)]}
+                name={[level, nameof<PerLevelValues>(o => o.rentabilityTax)]}
                 label="Rentability Tax"
                 labelCol={{ span: 24 }}
               >
@@ -109,7 +109,11 @@ export function InvestmentGoalsEditForm({
             </Col>
 
             <Col span={6}>
-              <Form.Item name={[level, nameof<FormValues>(o => o.value)]} label="Goal Value" labelCol={{ span: 24 }}>
+              <Form.Item
+                name={[level, nameof<PerLevelValues>(o => o.value)]}
+                label="Goal Value"
+                labelCol={{ span: 24 }}
+              >
                 <InputNumberMoney />
               </Form.Item>
             </Col>
