@@ -1,5 +1,5 @@
 # investments-manager
-WIP Project to manage your investments (stocks, real state, fixed rate...) in a more detailed manner. Forget about your stylesheets
+WIP Project to manage your investments (stocks, real state, fixed rate...) in a more detailed manner. Forget about your spreadsheets
 
 ## MVP - 1st
 - [ ] Allow to simulate monthly investing in a compound tax
