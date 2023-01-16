@@ -32,11 +32,26 @@ enum GoalLevel {
 
 model User {
   /// ID
-  id    Int    @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   /// @Validator.IsEmail()
-  email String @unique
+  email          String           @unique
   /// Name
-  name  String
+  name           String
+
+  /// Relations
+  InvestmentPlan InvestmentPlan[]
+}
+
+model InvestmentPlan {
+  /// ID
+  id   Int      @id @default(autoincrement())
+  /// Starting Date
+  date DateTime @db.Date
+
+  /// Relations
+  InvestmentGoal InvestmentGoal[]
+  blameUserId    Int?
+  blameUser      User?            @relation(fields: [blameUserId], references: [id])
 }
 
 model InvestmentGoal {
@@ -52,6 +67,10 @@ model InvestmentGoal {
   value              Int
   /// Yearly rentability tax (percentage * 100, allowing 2 decimal places)
   rentabilityTax     Int
+
+  /// Relations
+  investmentPlanId Int
+  investmentPlan   InvestmentPlan @relation(fields: [investmentPlanId], references: [id])
 
   @@unique([type, level])
 }

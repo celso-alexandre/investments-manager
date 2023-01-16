@@ -5,6 +5,7 @@ import {
   DeleteOneInvestmentGoalArgs,
   FindManyInvestmentGoalArgs,
   FindUniqueInvestmentGoalArgs,
+  ProjectInvestmentGoalArgs,
   UpdateManyInvestmentGoalArgs,
   UpdateOneInvestmentGoalArgs,
 } from './dto';
@@ -68,5 +69,10 @@ export class InvestmentGoalResolver {
     @Args() args: CreateUpdateManyInvestmentGoalArgs,
   ): Promise<boolean> {
     return this.service.createUpdate(args);
+  }
+
+  @Query(() => Object, { name: 'projectInvestmentGoals' })
+  project(args: ProjectInvestmentGoalArgs) {
+    return this.service.project(args);
   }
 }

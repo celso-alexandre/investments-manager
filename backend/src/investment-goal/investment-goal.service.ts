@@ -10,7 +10,9 @@ import {
   UpdateManyInvestmentGoalArgs,
   UpdateOneInvestmentGoalArgs,
   CreateUpdateManyInvestmentGoalArgs,
+  ProjectInvestmentGoalArgs,
 } from './dto';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class InvestmentGoalService {
@@ -87,5 +89,39 @@ export class InvestmentGoalService {
     if (prisma) await logicFn(prisma);
     else await prisma.$transaction(logicFn);
     return true;
+  }
+
+  async project({ dayInterval, where }: ProjectInvestmentGoalArgs) {
+    const goals = await this.prisma.investmentGoal.findMany({ where });
+    const projection = await Promise.all(
+      goals.map(async (goal) => {
+        const { investmentPlanId, monthlyApportValue, rentabilityTax, value } =
+          goal;
+        const { date } = await this.prisma.investmentPlan.findUnique({
+          where: { id: investmentPlanId },
+        });
+        let accumulatedValue = 0;
+        let day = dayjs(date).startOf('month');
+        const details: {
+          day: Date;
+          accumulatedValue: number;
+          profitValue: number;
+        }[] = [];
+        while (accumulatedValue < value) {
+          const isYearly = dayInterval === 'yearly';
+          const tax = rentabilityTax / 12 / 100;
+          const accumulatedWithoutTax = accumulatedValue + monthlyApportValue;
+          accumulatedValue = accumulatedWithoutTax * (1 + tax);
+
+          const profitValue = accumulatedValue - accumulatedWithoutTax;
+          details.push({
+            day: day.toDate(),
+            accumulatedValue,
+            profitValue,
+          });
+          day = day.add(1, isYearly ? 'year' : 'month');
+        }
+      }),
+    );
   }
 }
