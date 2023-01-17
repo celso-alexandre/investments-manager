@@ -14,6 +14,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type CreateManyInvestmentGoalInput = {
+  data: Array<InvestmentGoalCreateManyInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type EnumGoalLevelFieldUpdateOperationsInput = {
   set?: InputMaybe<GoalLevel>;
 };
@@ -197,10 +202,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   createInvestmentGoal: InvestmentGoal;
   createInvestmentGoals: Scalars['Boolean'];
+  createUpdateInvestmentGoals: Scalars['Boolean'];
   createUser: User;
   createUsers: Scalars['Boolean'];
   deleteInvestmentGoal: InvestmentGoal;
-  deleteInvestmentGoals: Scalars['Boolean'];
   deleteUser: User;
   deleteUsers: Scalars['Boolean'];
   updateInvestmentGoal: InvestmentGoal;
@@ -221,6 +226,12 @@ export type MutationCreateInvestmentGoalsArgs = {
 };
 
 
+export type MutationCreateUpdateInvestmentGoalsArgs = {
+  createMany?: InputMaybe<CreateManyInvestmentGoalInput>;
+  updateMany?: InputMaybe<UpdateManyInvestmentGoalInput>;
+};
+
+
 export type MutationCreateUserArgs = {
   data: UserCreateInput;
 };
@@ -234,11 +245,6 @@ export type MutationCreateUsersArgs = {
 
 export type MutationDeleteInvestmentGoalArgs = {
   where: InvestmentGoalWhereUniqueInput;
-};
-
-
-export type MutationDeleteInvestmentGoalsArgs = {
-  where?: InputMaybe<InvestmentGoalWhereInput>;
 };
 
 
@@ -377,6 +383,10 @@ export type StringFilter = {
   not?: InputMaybe<NestedStringFilter>;
   notIn?: InputMaybe<Array<Scalars['String']>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateManyInvestmentGoalInput = {
+  updateMany: Array<UpdateOneInvestmentGoalInput>;
 };
 
 export type UpdateOneInvestmentGoalInput = {
@@ -542,6 +552,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CreateManyInvestmentGoalInput: CreateManyInvestmentGoalInput;
   EnumGoalLevelFieldUpdateOperationsInput: EnumGoalLevelFieldUpdateOperationsInput;
   EnumGoalLevelFilter: EnumGoalLevelFilter;
   EnumGoalTypeFieldUpdateOperationsInput: EnumGoalTypeFieldUpdateOperationsInput;
@@ -578,6 +589,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   StringFieldUpdateOperationsInput: StringFieldUpdateOperationsInput;
   StringFilter: StringFilter;
+  UpdateManyInvestmentGoalInput: UpdateManyInvestmentGoalInput;
   UpdateOneInvestmentGoalInput: UpdateOneInvestmentGoalInput;
   UpdateOneUserInput: UpdateOneUserInput;
   User: ResolverTypeWrapper<User>;
@@ -598,6 +610,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  CreateManyInvestmentGoalInput: CreateManyInvestmentGoalInput;
   EnumGoalLevelFieldUpdateOperationsInput: EnumGoalLevelFieldUpdateOperationsInput;
   EnumGoalLevelFilter: EnumGoalLevelFilter;
   EnumGoalTypeFieldUpdateOperationsInput: EnumGoalTypeFieldUpdateOperationsInput;
@@ -629,6 +642,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   StringFieldUpdateOperationsInput: StringFieldUpdateOperationsInput;
   StringFilter: StringFilter;
+  UpdateManyInvestmentGoalInput: UpdateManyInvestmentGoalInput;
   UpdateOneInvestmentGoalInput: UpdateOneInvestmentGoalInput;
   UpdateOneUserInput: UpdateOneUserInput;
   User: User;
@@ -705,10 +719,10 @@ export type InvestmentGoalSumAggregateResolvers<ContextType = any, ParentType ex
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createInvestmentGoal?: Resolver<ResolversTypes['InvestmentGoal'], ParentType, ContextType, RequireFields<MutationCreateInvestmentGoalArgs, 'data'>>;
   createInvestmentGoals?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateInvestmentGoalsArgs, 'data'>>;
+  createUpdateInvestmentGoals?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationCreateUpdateInvestmentGoalsArgs>>;
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'data'>>;
   createUsers?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateUsersArgs, 'data'>>;
   deleteInvestmentGoal?: Resolver<ResolversTypes['InvestmentGoal'], ParentType, ContextType, RequireFields<MutationDeleteInvestmentGoalArgs, 'where'>>;
-  deleteInvestmentGoals?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteInvestmentGoalsArgs>>;
   deleteUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'where'>>;
   deleteUsers?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteUsersArgs>>;
   updateInvestmentGoal?: Resolver<ResolversTypes['InvestmentGoal'], ParentType, ContextType, RequireFields<MutationUpdateInvestmentGoalArgs, 'data' | 'where'>>;

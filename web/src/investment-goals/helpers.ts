@@ -2,10 +2,10 @@ import type * as Types from '../types';
 import { GoalLevel } from '../types';
 import { serializeDecimalAsInt, serializeIntAsDecimal } from '../helpers';
 
-export type FormValues = Types.InvestmentGoalCreateInput & { id?: string };
-export type InitialValues = { [key in GoalLevel]: FormValues };
+export type PerLevelValues = Types.InvestmentGoalCreateInput & { id?: string };
+export type FormValues = { [key in GoalLevel]: PerLevelValues };
 
-function onSubmitDto({ monthlyApportValue, value, rentabilityTax, ...values }: FormValues): FormValues {
+function onSubmitDto({ monthlyApportValue, value, rentabilityTax, ...values }: PerLevelValues): PerLevelValues {
   return {
     ...values,
     monthlyApportValue: serializeDecimalAsInt(monthlyApportValue),
@@ -13,7 +13,7 @@ function onSubmitDto({ monthlyApportValue, value, rentabilityTax, ...values }: F
     value: serializeDecimalAsInt(value),
   };
 }
-export function onSubmit(submittedValues: InitialValues) {
+export function onSubmit(submittedValues: FormValues) {
   const datas = Object.values(submittedValues).reduce(
     (prev, rawCur) => {
       const cur = onSubmitDto(rawCur);
@@ -40,7 +40,12 @@ export function onSubmit(submittedValues: InitialValues) {
   return datas;
 }
 
-export function defaultValuesDto({ monthlyApportValue, value, rentabilityTax, ...values }: FormValues): FormValues {
+export function defaultValuesDto({
+  monthlyApportValue,
+  value,
+  rentabilityTax,
+  ...values
+}: PerLevelValues): PerLevelValues {
   return {
     ...values,
     monthlyApportValue: serializeIntAsDecimal(monthlyApportValue),

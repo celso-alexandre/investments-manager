@@ -2,14 +2,15 @@ import { Resolver, Args, Query, Mutation } from '@nestjs/graphql';
 import {
   CreateManyInvestmentGoalArgs,
   CreateOneInvestmentGoalArgs,
-  DeleteManyInvestmentGoalArgs,
   DeleteOneInvestmentGoalArgs,
   FindManyInvestmentGoalArgs,
   FindUniqueInvestmentGoalArgs,
+  ProjectInvestmentGoalArgs,
   UpdateManyInvestmentGoalArgs,
   UpdateOneInvestmentGoalArgs,
 } from './dto';
 import { InvestmentGoal } from './dto';
+import { CreateUpdateManyInvestmentGoalArgs } from './dto/args/create-update-delete.args';
 import { InvestmentGoalService } from './investment-goal.service';
 
 @Resolver(() => InvestmentGoal)
@@ -63,8 +64,15 @@ export class InvestmentGoalResolver {
     return this.service.deleteOne(args);
   }
 
-  @Mutation(() => Boolean, { name: 'deleteInvestmentGoals' })
-  deleteMany(@Args() args: DeleteManyInvestmentGoalArgs): Promise<boolean> {
-    return this.service.deleteMany(args);
+  @Mutation(() => Boolean, { name: 'createUpdateInvestmentGoals' })
+  createUpdate(
+    @Args() args: CreateUpdateManyInvestmentGoalArgs,
+  ): Promise<boolean> {
+    return this.service.createUpdate(args);
+  }
+
+  @Query(() => Object, { name: 'projectInvestmentGoals' })
+  project(args: ProjectInvestmentGoalArgs) {
+    return this.service.project(args);
   }
 }

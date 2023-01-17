@@ -1,28 +1,21 @@
-import { Form, Skeleton } from 'antd';
+import { Button, Form, Skeleton } from 'antd';
 import { useMemo } from 'react';
 import { Title } from '../components/title';
 import { InvestmentGoalsEditForm } from './form';
 import {
-  InvestmentGoalDocument,
-  useCreateInvestmentGoalsMutation,
+  InvestmentGoalsDocument,
+  useCreateUpdateInvestmentGoalsMutation,
   useInvestmentGoalsQuery,
-  useUpdateInvestmentGoalsMutation,
 } from './graphql/__generated__/index.gql.generated';
 
 export function InvestmentGoals() {
   const [form] = Form.useForm();
   const { data, loading: loadingData } = useInvestmentGoalsQuery({ fetchPolicy: 'cache-and-network' });
-  const [updateMany, { loading: loadingUpdate }] = useUpdateInvestmentGoalsMutation({
-    refetchQueries: [InvestmentGoalDocument],
-  });
-  const [createMany, { loading: loadingCreate }] = useCreateInvestmentGoalsMutation({
-    refetchQueries: [InvestmentGoalDocument],
+  const [createUpdateMany, { loading: loadingCreateUpdate }] = useCreateUpdateInvestmentGoalsMutation({
+    refetchQueries: [InvestmentGoalsDocument],
   });
 
-  const isLoading = useMemo(
-    () => loadingData || loadingCreate || loadingUpdate,
-    [loadingData, loadingCreate, loadingUpdate]
-  );
+  const isLoading = useMemo(() => loadingData || loadingCreateUpdate, [loadingData, loadingCreateUpdate]);
   if (isLoading) return <Skeleton />;
 
   return (
@@ -30,7 +23,17 @@ export function InvestmentGoals() {
       <Title title="Investment Goals" />
 
       <div style={{ padding: '0px 30px' }}>
-        <InvestmentGoalsEditForm data={data} form={form} createMany={createMany} updateMany={updateMany} />
+        <InvestmentGoalsEditForm data={data} form={form} createUpdateMany={createUpdateMany} />
+      </div>
+
+      <div style={{ width: '100%', textAlign: 'center', marginTop: '20px' }}>
+        <Button
+          onClick={() => {
+            form.submit();
+          }}
+        >
+          Save & reload
+        </Button>
       </div>
     </>
   );

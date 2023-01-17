@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { InvestmentGoals } from './investment-goals';
 import { NoMatch } from './not-found';
 
-function App() {
+export function App() {
   return (
     <Routes>
       <Route index element={<InvestmentGoals />} />
@@ -10,5 +10,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

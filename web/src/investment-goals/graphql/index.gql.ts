@@ -27,20 +27,10 @@ gql`
 `;
 
 gql`
-  mutation CreateInvestmentGoals($data: [InvestmentGoalCreateManyInput!]!) {
-    createInvestmentGoals(data: $data)
-  }
-`;
-
-gql`
-  mutation UpdateInvestmentGoals($updateMany: [UpdateOneInvestmentGoalInput!]!) {
-    updateInvestmentGoals(updateMany: $updateMany) {
-      id
-      type
-      level
-      monthlyApportValue
-      rentabilityTax
-      value
-    }
+  mutation CreateUpdateInvestmentGoals(
+    $createMany: CreateManyInvestmentGoalInput
+    $updateMany: UpdateManyInvestmentGoalInput
+  ) {
+    createUpdateInvestmentGoals(createMany: $createMany, updateMany: $updateMany)
   }
 `;

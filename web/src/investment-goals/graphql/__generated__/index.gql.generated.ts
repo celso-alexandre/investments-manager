@@ -18,19 +18,13 @@ export type InvestmentGoalQueryVariables = Types.Exact<{
 
 export type InvestmentGoalQuery = { __typename?: 'Query', investmentGoal: { __typename?: 'InvestmentGoal', id: string, type: Types.GoalType, level: Types.GoalLevel, monthlyApportValue: number, rentabilityTax: number, value: number } };
 
-export type CreateInvestmentGoalsMutationVariables = Types.Exact<{
-  data: Array<Types.InvestmentGoalCreateManyInput> | Types.InvestmentGoalCreateManyInput;
+export type CreateUpdateInvestmentGoalsMutationVariables = Types.Exact<{
+  createMany?: Types.InputMaybe<Types.CreateManyInvestmentGoalInput>;
+  updateMany?: Types.InputMaybe<Types.UpdateManyInvestmentGoalInput>;
 }>;
 
 
-export type CreateInvestmentGoalsMutation = { __typename?: 'Mutation', createInvestmentGoals: boolean };
-
-export type UpdateInvestmentGoalsMutationVariables = Types.Exact<{
-  updateMany: Array<Types.UpdateOneInvestmentGoalInput> | Types.UpdateOneInvestmentGoalInput;
-}>;
-
-
-export type UpdateInvestmentGoalsMutation = { __typename?: 'Mutation', updateInvestmentGoals: Array<{ __typename?: 'InvestmentGoal', id: string, type: Types.GoalType, level: Types.GoalLevel, monthlyApportValue: number, rentabilityTax: number, value: number }> };
+export type CreateUpdateInvestmentGoalsMutation = { __typename?: 'Mutation', createUpdateInvestmentGoals: boolean };
 
 
 export const InvestmentGoalsDocument = gql`
@@ -114,72 +108,35 @@ export function useInvestmentGoalLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type InvestmentGoalQueryHookResult = ReturnType<typeof useInvestmentGoalQuery>;
 export type InvestmentGoalLazyQueryHookResult = ReturnType<typeof useInvestmentGoalLazyQuery>;
 export type InvestmentGoalQueryResult = Apollo.QueryResult<InvestmentGoalQuery, InvestmentGoalQueryVariables>;
-export const CreateInvestmentGoalsDocument = gql`
-    mutation CreateInvestmentGoals($data: [InvestmentGoalCreateManyInput!]!) {
-  createInvestmentGoals(data: $data)
+export const CreateUpdateInvestmentGoalsDocument = gql`
+    mutation CreateUpdateInvestmentGoals($createMany: CreateManyInvestmentGoalInput, $updateMany: UpdateManyInvestmentGoalInput) {
+  createUpdateInvestmentGoals(createMany: $createMany, updateMany: $updateMany)
 }
     `;
-export type CreateInvestmentGoalsMutationFn = Apollo.MutationFunction<CreateInvestmentGoalsMutation, CreateInvestmentGoalsMutationVariables>;
+export type CreateUpdateInvestmentGoalsMutationFn = Apollo.MutationFunction<CreateUpdateInvestmentGoalsMutation, CreateUpdateInvestmentGoalsMutationVariables>;
 
 /**
- * __useCreateInvestmentGoalsMutation__
+ * __useCreateUpdateInvestmentGoalsMutation__
  *
- * To run a mutation, you first call `useCreateInvestmentGoalsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateInvestmentGoalsMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateUpdateInvestmentGoalsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUpdateInvestmentGoalsMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createInvestmentGoalsMutation, { data, loading, error }] = useCreateInvestmentGoalsMutation({
+ * const [createUpdateInvestmentGoalsMutation, { data, loading, error }] = useCreateUpdateInvestmentGoalsMutation({
  *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateInvestmentGoalsMutation(baseOptions?: Apollo.MutationHookOptions<CreateInvestmentGoalsMutation, CreateInvestmentGoalsMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateInvestmentGoalsMutation, CreateInvestmentGoalsMutationVariables>(CreateInvestmentGoalsDocument, options);
-      }
-export type CreateInvestmentGoalsMutationHookResult = ReturnType<typeof useCreateInvestmentGoalsMutation>;
-export type CreateInvestmentGoalsMutationResult = Apollo.MutationResult<CreateInvestmentGoalsMutation>;
-export type CreateInvestmentGoalsMutationOptions = Apollo.BaseMutationOptions<CreateInvestmentGoalsMutation, CreateInvestmentGoalsMutationVariables>;
-export const UpdateInvestmentGoalsDocument = gql`
-    mutation UpdateInvestmentGoals($updateMany: [UpdateOneInvestmentGoalInput!]!) {
-  updateInvestmentGoals(updateMany: $updateMany) {
-    id
-    type
-    level
-    monthlyApportValue
-    rentabilityTax
-    value
-  }
-}
-    `;
-export type UpdateInvestmentGoalsMutationFn = Apollo.MutationFunction<UpdateInvestmentGoalsMutation, UpdateInvestmentGoalsMutationVariables>;
-
-/**
- * __useUpdateInvestmentGoalsMutation__
- *
- * To run a mutation, you first call `useUpdateInvestmentGoalsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateInvestmentGoalsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateInvestmentGoalsMutation, { data, loading, error }] = useUpdateInvestmentGoalsMutation({
- *   variables: {
+ *      createMany: // value for 'createMany'
  *      updateMany: // value for 'updateMany'
  *   },
  * });
  */
-export function useUpdateInvestmentGoalsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateInvestmentGoalsMutation, UpdateInvestmentGoalsMutationVariables>) {
+export function useCreateUpdateInvestmentGoalsMutation(baseOptions?: Apollo.MutationHookOptions<CreateUpdateInvestmentGoalsMutation, CreateUpdateInvestmentGoalsMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateInvestmentGoalsMutation, UpdateInvestmentGoalsMutationVariables>(UpdateInvestmentGoalsDocument, options);
+        return Apollo.useMutation<CreateUpdateInvestmentGoalsMutation, CreateUpdateInvestmentGoalsMutationVariables>(CreateUpdateInvestmentGoalsDocument, options);
       }
-export type UpdateInvestmentGoalsMutationHookResult = ReturnType<typeof useUpdateInvestmentGoalsMutation>;
-export type UpdateInvestmentGoalsMutationResult = Apollo.MutationResult<UpdateInvestmentGoalsMutation>;
-export type UpdateInvestmentGoalsMutationOptions = Apollo.BaseMutationOptions<UpdateInvestmentGoalsMutation, UpdateInvestmentGoalsMutationVariables>;
+export type CreateUpdateInvestmentGoalsMutationHookResult = ReturnType<typeof useCreateUpdateInvestmentGoalsMutation>;
+export type CreateUpdateInvestmentGoalsMutationResult = Apollo.MutationResult<CreateUpdateInvestmentGoalsMutation>;
+export type CreateUpdateInvestmentGoalsMutationOptions = Apollo.BaseMutationOptions<CreateUpdateInvestmentGoalsMutation, CreateUpdateInvestmentGoalsMutationVariables>;
